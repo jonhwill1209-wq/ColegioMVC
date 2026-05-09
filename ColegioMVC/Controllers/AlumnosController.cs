@@ -9,22 +9,22 @@ using ColegioMVC.Models;
 
 namespace ColegioMVC.Controllers
 {
-    public class AlumnoesController : Controller
+    public class AlumnosController : Controller
     {
         private readonly ColegioContext _context;
 
-        public AlumnoesController(ColegioContext context)
+        public AlumnosController(ColegioContext context)
         {
             _context = context;
         }
 
-        // GET: Alumnoes
+        // GET: Alumnos
         public async Task<IActionResult> Index()
         {
             return View(await _context.Alumno.ToListAsync());
         }
 
-        // GET: Alumnoes/Details/5
+        // GET: Alumnos/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -42,13 +42,13 @@ namespace ColegioMVC.Controllers
             return View(alumno);
         }
 
-        // GET: Alumnoes/Create
+        // GET: Alumnos/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Alumnoes/Create
+        // POST: Alumnos/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -64,7 +64,7 @@ namespace ColegioMVC.Controllers
             return View(alumno);
         }
 
-        // GET: Alumnoes/Edit/5
+        // GET: Alumnos/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)

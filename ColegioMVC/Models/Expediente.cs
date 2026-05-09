@@ -8,18 +8,18 @@ namespace ColegioMVC.Models
         [Key]
         public int ExpedienteId { get; set; }
 
-        [ForeignKey("Alumno")]
         public int AlumnoId { get; set; }
 
-        [ForeignKey("Materia")]
         public int MateriaId { get; set; }
 
         public decimal NotaFinal { get; set; }
 
         public string Observaciones { get; set; }
 
+        [ForeignKey("AlumnoId")]
         public Alumno? Alumno { get; set; }
 
+        [ForeignKey("MateriaId")]
         public Materia? Materia { get; set; }
     }
 }

@@ -10,7 +10,5 @@ namespace ColegioMVC.Models
         public string NombreMateria { get; set; }
 
         public string Docente { get; set; }
-
-        public ICollection<Expediente>? Expedientes { get; set; }
     }
 }

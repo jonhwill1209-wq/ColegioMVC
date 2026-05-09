@@ -14,7 +14,5 @@ namespace ColegioMVC.Models
         public DateTime FechaNacimiento { get; set; }
 
         public string Grado { get; set; }
-
-        public ICollection<Expediente>? Expedientes { get; set; }
     }
 }
