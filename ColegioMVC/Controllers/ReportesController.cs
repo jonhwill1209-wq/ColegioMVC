@@ -18,7 +18,7 @@ namespace ColegioMVC.Controllers
             var promedios = await _context.Expediente
                 .Include(e => e.Alumno)
                 .GroupBy(e => e.Alumno.Nombre)
-                .Select(g => new
+                .Select(g => new PromedioViewModel
                 {
                     Alumno = g.Key,
                     Promedio = g.Average(x => x.NotaFinal)

@@ -11,6 +11,7 @@ namespace ColegioMVC.Models
 
         public string Apellido { get; set; }
 
+        [DataType(DataType.Date)]
         public DateTime FechaNacimiento { get; set; }
 
         public string Grado { get; set; }

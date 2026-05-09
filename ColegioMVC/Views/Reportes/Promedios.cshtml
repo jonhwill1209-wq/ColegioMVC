@@ -1,8 +1,8 @@
-﻿@model dynamic
+﻿@model IEnumerable<ColegioMVC.Models.PromedioViewModel>
 
-<h2>Promedio por Alumno</h2>
+<h1>Promedio de Notas por Alumno</h1>
 
-<table class="table">
+<table class="table table-bordered">
     <thead>
         <tr>
             <th>Alumno</th>
@@ -15,39 +15,52 @@
         {
             <tr>
                 <td>@item.Alumno</td>
-                <td>@item.Promedio</td>
+                <td>@item.Promedio.ToString("0.00")</td>
             </tr>
         }
     </tbody>
 </table>
 
+<hr />
+<h2>Gráfica de Promedios</h2>
+<canvas id="graficaPromedios"></canvas>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        var ctx = document.getElementById('graficaPromedios');
 
+        var alumnos = [
+            @foreach (var item in Model)
+            {
+                @: '@item.Alumno',
+            }
+        ];
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            var promedios = [
+            @foreach (var item in Model)
+            {
+                @: @item.Promedio,
+            }
+        ];
 
-<canvas id="grafica"></canvas>
-
-<script>
-    const ctx = document.getElementById('grafica');
-
-    new Chart(ctx, {
-    type: 'bar',
-    data: {
-    labels: [
-    @foreach (var item in Model)
-    {
-        @: '@item.Alumno',
-    }
-    ],
-    datasets: [{
-    label: 'Promedio',
-    data: [
-    @foreach (var item in Model)
-    {
-        @: @item.Promedio,
-    }
-    ]
-    }]
-    }
-    });
-</script>
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: alumnos,
+                datasets: [
+                    {
+                    label: 'Promedio',
+                    data: promedios,
+                    borderWidth: 1
+                    }
+                ]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 10
+                   }
+                }
+             }
+        });
+    </script>
