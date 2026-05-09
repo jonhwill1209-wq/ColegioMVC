@@ -1,0 +1,53 @@
+﻿@model dynamic
+
+<h2>Promedio por Alumno</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Alumno</th>
+            <th>Promedio</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Alumno</td>
+                <td>@item.Promedio</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<canvas id="grafica"></canvas>
+
+<script>
+    const ctx = document.getElementById('grafica');
+
+    new Chart(ctx, {
+    type: 'bar',
+    data: {
+    labels: [
+    @foreach (var item in Model)
+    {
+        @: '@item.Alumno',
+    }
+    ],
+    datasets: [{
+    label: 'Promedio',
+    data: [
+    @foreach (var item in Model)
+    {
+        @: @item.Promedio,
+    }
+    ]
+    }]
+    }
+    });
+</script>
