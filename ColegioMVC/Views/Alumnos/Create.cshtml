@@ -27,10 +27,30 @@
                 <input asp-for="FechaNacimiento" class="form-control" />
                 <span asp-validation-for="FechaNacimiento" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group mb-3">
+
                 <label asp-for="Grado" class="control-label"></label>
-                <input asp-for="Grado" class="form-control" />
+
+                <select asp-for="Grado" class="form-select">
+
+                    <option value="">Seleccione un grado</option>
+
+                    <option>Primero</option>
+                    <option>Segundo</option>
+                    <option>Tercero</option>
+                    <option>Cuarto</option>
+                    <option>Quinto</option>
+                    <option>Sexto</option>
+                    <option>Septimo</option>
+                    <option>Octavo</option>
+                    <option>Noveno</option>
+                    <option>Bachillerato 1</option>
+                    <option>Bachillerato 2</option>
+
+                </select>
+
                 <span asp-validation-for="Grado" class="text-danger"></span>
+
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

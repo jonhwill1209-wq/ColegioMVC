@@ -139,12 +139,25 @@ namespace ColegioMVC.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var alumno = await _context.Alumno.FindAsync(id);
+
+            // Verificar si tiene expedientes
+            bool tieneExpedientes = _context.Expediente
+                .Any(e => e.AlumnoId == id);
+
+            if (tieneExpedientes)
+            {
+                TempData["Error"] =
+                    "No se puede eliminar el alumno porque tiene expedientes registrados.";
+
+                return RedirectToAction(nameof(Index));
+            }
+
             if (alumno != null)
             {
                 _context.Alumno.Remove(alumno);
+                await _context.SaveChangesAsync();
             }
 
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 

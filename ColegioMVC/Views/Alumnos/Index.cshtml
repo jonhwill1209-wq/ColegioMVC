@@ -1,53 +1,158 @@
 ﻿@model IEnumerable<ColegioMVC.Models.Alumno>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Alumnos";
 }
 
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Nombre)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Apellido)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FechaNacimiento)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Grado)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nombre)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Apellido)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FechaNacimiento)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Grado)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.AlumnoId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.AlumnoId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.AlumnoId">Delete</a>
-            </td>
-        </tr>
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["Error"]
+    </div>
 }
-    </tbody>
-</table>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <h1 class="fw-bold">
+        <i class="bi bi-people"></i> Gestión de Alumnos
+    </h1>
+
+    <a asp-action="Create" class="btn btn-primary">
+        <i class="bi bi-plus-circle"></i> Nuevo Alumno
+    </a>
+
+</div>
+
+<div class="card shadow p-4">
+
+    <div class="row mb-4">
+
+        <div class="col-md-4">
+            <input type="text"
+                   id="buscarAlumno"
+                   class="form-control"
+                   placeholder="Buscar alumno..." />
+        </div>
+
+        <div class="col-md-3">
+            <select id="filtroGrado" class="form-select">
+                <option value="">Todos los grados</option>
+
+                <option>Primero</option>
+                <option>Segundo</option>
+                <option>Tercero</option>
+                <option>Cuarto</option>
+                <option>Quinto</option>
+                <option>Sexto</option>
+                <option>Septimo</option>
+                <option>Octavo</option>
+                <option>Noveno</option>
+                <option>Bachiller 1</option>
+                <option>Bachiller 2</option>
+            </select>
+        </div>
+
+    </div>
+
+    <table class="table table-hover align-middle" id="tablaAlumnos">
+
+        <thead class="table-dark">
+
+            <tr>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Fecha Nacimiento</th>
+                <th>Grado</th>
+                <th width="280">Acciones</th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+
+                    <td>@item.Nombre</td>
+
+                    <td>@item.Apellido</td>
+
+                    <td>
+                        @item.FechaNacimiento.ToString("dd/MM/yyyy")
+                    </td>
+
+                    <td>@item.Grado</td>
+
+                    <td>
+
+                        <div class="d-flex gap-2">
+
+                            <a asp-action="Edit"
+                                   asp-route-id="@item.AlumnoId"
+                                   class="btn btn-warning btn-sm">
+
+                                <i class="bi bi-pencil-square"></i>
+                            </a>
+
+                            <a asp-action="Details"
+                                   asp-route-id="@item.AlumnoId"
+                                   class="btn btn-info btn-sm text-white">
+
+                                <i class="bi bi-eye"></i>
+                            </a>
+
+                            <a asp-action="Delete"
+                                   asp-route-id="@item.AlumnoId"
+                                   class="btn btn-danger btn-sm">
+
+                                <i class="bi bi-trash"></i>
+                            </a>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+
+</div>
+
+<script>
+
+    const buscarAlumno = document.getElementById('buscarAlumno');
+    const filtroGrado = document.getElementById('filtroGrado');
+
+    function filtrarTabla() {
+
+        let textoBusqueda = buscarAlumno.value.toLowerCase();
+        let gradoSeleccionado = filtroGrado.value.toLowerCase();
+
+        let filas = document.querySelectorAll('#tablaAlumnos tbody tr');
+
+        filas.forEach(fila => {
+
+            let textoFila = fila.textContent.toLowerCase();
+
+            let coincideBusqueda = textoFila.includes(textoBusqueda);
+
+            let coincideGrado =
+                gradoSeleccionado === '' ||
+                textoFila.includes(gradoSeleccionado);
+
+            fila.style.display =
+                (coincideBusqueda && coincideGrado)
+                    ? ''
+                    : 'none';
+        });
+    }
+
+    buscarAlumno.addEventListener('keyup', filtrarTabla);
+
+    filtroGrado.addEventListener('change', filtrarTabla);
+
+</script>
