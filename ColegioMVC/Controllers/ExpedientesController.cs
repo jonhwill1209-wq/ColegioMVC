@@ -21,7 +21,10 @@ namespace ColegioMVC.Controllers
         // GET: Expedientes
         public async Task<IActionResult> Index()
         {
-            var colegioContext = _context.Expediente.Include(e => e.Alumno).Include(e => e.Materia);
+            var colegioContext = _context.Expediente
+                .Include(e => e.Alumno)
+                .Include(e => e.Materia);
+
             return View(await colegioContext.ToListAsync());
         }
 
@@ -37,6 +40,7 @@ namespace ColegioMVC.Controllers
                 .Include(e => e.Alumno)
                 .Include(e => e.Materia)
                 .FirstOrDefaultAsync(m => m.ExpedienteId == id);
+
             if (expediente == null)
             {
                 return NotFound();
@@ -48,14 +52,13 @@ namespace ColegioMVC.Controllers
         // GET: Expedientes/Create
         public IActionResult Create()
         {
-            ViewData["AlumnoId"] = new SelectList(_context.Alumno, "AlumnoId", "AlumnoId");
-            ViewData["MateriaId"] = new SelectList(_context.Materia, "MateriaId", "MateriaId");
+            ViewData["AlumnoId"] = new SelectList(_context.Alumno, "AlumnoId", "Nombre");
+            ViewData["MateriaId"] = new SelectList(_context.Materia, "MateriaId", "NombreMateria");
+
             return View();
         }
 
         // POST: Expedientes/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ExpedienteId,AlumnoId,MateriaId,NotaFinal,Observaciones")] Expediente expediente)
@@ -64,10 +67,14 @@ namespace ColegioMVC.Controllers
             {
                 _context.Add(expediente);
                 await _context.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AlumnoId"] = new SelectList(_context.Alumno, "AlumnoId", "AlumnoId", expediente.AlumnoId);
-            ViewData["MateriaId"] = new SelectList(_context.Materia, "MateriaId", "MateriaId", expediente.MateriaId);
+
+            ViewData["AlumnoId"] = new SelectList(_context.Alumno, "AlumnoId", "Nombre", expediente.AlumnoId);
+
+            ViewData["MateriaId"] = new SelectList(_context.Materia, "MateriaId", "NombreMateria", expediente.MateriaId);
+
             return View(expediente);
         }
 
@@ -80,18 +87,20 @@ namespace ColegioMVC.Controllers
             }
 
             var expediente = await _context.Expediente.FindAsync(id);
+
             if (expediente == null)
             {
                 return NotFound();
             }
-            ViewData["AlumnoId"] = new SelectList(_context.Alumno, "AlumnoId", "AlumnoId", expediente.AlumnoId);
-            ViewData["MateriaId"] = new SelectList(_context.Materia, "MateriaId", "MateriaId", expediente.MateriaId);
+
+            ViewData["AlumnoId"] = new SelectList(_context.Alumno, "AlumnoId", "Nombre", expediente.AlumnoId);
+
+            ViewData["MateriaId"] = new SelectList(_context.Materia, "MateriaId", "NombreMateria", expediente.MateriaId);
+
             return View(expediente);
         }
 
         // POST: Expedientes/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ExpedienteId,AlumnoId,MateriaId,NotaFinal,Observaciones")] Expediente expediente)
@@ -119,10 +128,14 @@ namespace ColegioMVC.Controllers
                         throw;
                     }
                 }
+
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AlumnoId"] = new SelectList(_context.Alumno, "AlumnoId", "AlumnoId", expediente.AlumnoId);
-            ViewData["MateriaId"] = new SelectList(_context.Materia, "MateriaId", "MateriaId", expediente.MateriaId);
+
+            ViewData["AlumnoId"] = new SelectList(_context.Alumno, "AlumnoId", "Nombre", expediente.AlumnoId);
+
+            ViewData["MateriaId"] = new SelectList(_context.Materia, "MateriaId", "NombreMateria", expediente.MateriaId);
+
             return View(expediente);
         }
 
@@ -138,6 +151,7 @@ namespace ColegioMVC.Controllers
                 .Include(e => e.Alumno)
                 .Include(e => e.Materia)
                 .FirstOrDefaultAsync(m => m.ExpedienteId == id);
+
             if (expediente == null)
             {
                 return NotFound();
@@ -152,12 +166,14 @@ namespace ColegioMVC.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var expediente = await _context.Expediente.FindAsync(id);
+
             if (expediente != null)
             {
                 _context.Expediente.Remove(expediente);
             }
 
             await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
 
