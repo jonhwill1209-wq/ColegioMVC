@@ -20,3 +20,17 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+table {
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.card {
+    border-radius: 15px;
+}
+
+.btn {
+    border-radius: 10px;
+}
